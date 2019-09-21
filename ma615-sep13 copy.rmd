@@ -1,0 +1,58 @@
+---
+title: "Class Assignment: MPG tables and charts"
+author: "Yiping Jiang"
+date: "September 20, 2019"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+library(knitr)                ## loading the entire knitr package
+library(tidyverse)              ## the only tidyverse library you need is ggplot2
+library(esquisse)             ## use esquisse to setup the basic plots
+
+library(kableExtra)
+library(magrittr)
+opts_chunk$set(echo = TRUE)
+```
+
+# Class assignment:
+
+Using the MPG dataset, which is available with the ggplot2 library, produce a document that includes the following elements: headers, text, tables, and plots.  
+
+Tables should include a comparison of city and highway mileage by the class of car and the best three car models for city and highway mileage for all the years in which data is available.  
+
+Plot the data displaying as much of the data as you can. Put continuous variables on the axes and include a locally smoothed regression line to show the relationship with mileage.  Also make a box plot comparing city and highway MPG by class of car.  
+
+
+# Table One
+##
+<div class = "centered">
+comparison of city and highway mileage by the class of car.
+
+```{r echo = F}
+
+data(mpg)
+mpg_1 = select(mpg, class, cty, hwy)
+mpg_1 %<>% group_by(class) %>%
+  summarise(City = mean(cty), Highway = mean(hwy)) %>%
+  arrange(class, City, Highway)
+mpg_1 = mpg_1[order(mpg_1$City, decreasing=T), ]
+kable(mpg_1, digits = 2, align = 'c', format = 'html', col.names =
+        c('Class','City','MPG'), booktabs = T, longtable = T) %>%
+  kable_styling(bootstrap_options = c('striped', 'hover', 'condensed', 'responsive',  
+                                      full_width = T, position = "center", font_size = 15))
+                
+```
+
+# Table Two
+
+```{r echo=F}
+
+mpg_2 = select(mpf, cty, hwy, model, year)
+map_1999 = mpg_2[which(mpg_2$year==1999),]
+
+```
+
+
+
+
